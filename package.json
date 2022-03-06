@@ -1,16 +1,29 @@
 {
   "name": "drip-drop-subgraph",
   "license": "UNLICENSED",
+  "version": "0.0.1",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ NFTDroppr/drip-drop-subgraph",
     "create-local": "graph create --node http://localhost:8020/ NFTDroppr/drip-drop-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ NFTDroppr/drip-drop-subgraph",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 NFTDroppr/drip-drop-subgraph"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 NFTDroppr/drip-drop-subgraph",
+    "dev": "npm run codegen && npm run deploy-local -- --version-label v0.0.1",
+    "dev:nodemon": "node_modules/nodemon/bin/nodemon.js --exec 'npm run dev' --ignore build/ --ignore generated/ --ignore data/ --ext 'ts,json,graphql,yaml'",
+    "lint": "npx prettier src/",
+    "lint:fix": "npx prettier -w src/",
+    "scaffold": "node utils/scaffoldFromAbi.js",
+    "prepare:RSK:testnet": "npx mustache config/RSK.testnet.json subgraph.template.yaml > subgraph.yaml && npx mustache config/RSK.testnet.json docker-compose.template.yml > docker-compose.yml",
+    "prepare:RSK:mainnet": "npx mustache config/RSK.mainnet.json subgraph.template.yaml > subgraph.yaml && npx mustache config/RSK.mainnet.json docker-compose.template.yml > docker-compose.yml"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.26.0",
-    "@graphprotocol/graph-ts": "0.24.1"
+    "@graphprotocol/graph-ts": "0.24.1",
+    "@protofire/subgraph-toolkit": "^0.1.2",
+    "dotenv": "^14.2.0",
+    "mustache": "^4.2.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
   }
 }
