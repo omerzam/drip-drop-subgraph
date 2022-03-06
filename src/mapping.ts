@@ -1,6 +1,6 @@
-import { BigInt } from "@graphprotocol/graph-ts"
-import { ERC20, Approval, Transfer } from "../generated/ERC20/ERC20"
-import { ExampleEntity } from "../generated/schema"
+import { BigInt } from '@graphprotocol/graph-ts'
+import { ERC20, Approval, Transfer } from '../generated/ERC20/ERC20'
+import { ExampleEntity } from '../generated/schema'
 
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID

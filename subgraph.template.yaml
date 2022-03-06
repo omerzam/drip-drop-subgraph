@@ -6,8 +6,9 @@ dataSources:
     name: ERC20
     network: mainnet
     source:
-      address: "0x69FE5cEC81D5eF92600c1A0dB1F11986AB3758Ab"
+      address: "{{WRBTCToken.address}}"
       abi: ERC20
+      startBlock: {{WRBTCToken.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
