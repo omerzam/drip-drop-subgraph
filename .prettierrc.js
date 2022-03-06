@@ -1,7 +1,7 @@
 module.exports = {
   ...require('@protofire/subgraph-toolkit/prettier.config.js'),
 
-  printWidth: 160,
+  printWidth: 120,
 
   overrides: [
     {
@@ -10,7 +10,7 @@ module.exports = {
         "tabWidth": 2,
         "useTabs": false,
         "semi": false,
-        "printWidth": 160,
+        "printWidth": 120,
         "singleQuote": true
       },
     },
