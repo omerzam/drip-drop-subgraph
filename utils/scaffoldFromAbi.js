@@ -40,20 +40,11 @@ const generateDataSource = ({ abi, contractName, relativePath, scaffoldAll = fal
   const space = scaffoldAll ? '' : '\n  - '
   return `${space}kind: ethereum/contract
     name: ${contractName}
-    network: {
-        {network
-        }
-    }
+    network: {{network}}
     source:
-      address: '{
-        {${contractName}.address
-        }
-    }'
+      address: '{{${contractName}.address}}'
       abi: ${contractName}
-      startBlock: {
-        {${contractName}.startBlock
-        }
-    }
+      startBlock: {{${contractName}.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
