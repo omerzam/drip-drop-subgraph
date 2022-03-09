@@ -11,5 +11,9 @@
   "DR_Sale": {
     "address": "",
     "startBlock": 0
+  },
+  "DR_Token": {
+    "address": "",
+    "startBlock": 0
   }
 }
