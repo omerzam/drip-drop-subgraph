@@ -2,7 +2,7 @@
   "network": "mainnet",
   "node": {
     "address": "",
-    "log_level": "debug"
+    "log_level": "info"
   },
   "DR_Registry": {
     "address": "",
@@ -13,6 +13,10 @@
     "startBlock": 0
   },
   "DR_Token": {
+    "address": "",
+    "startBlock": 0
+  },
+  "DR_TokenFactory": {
     "address": "",
     "startBlock": 0
   }

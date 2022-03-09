@@ -241,3 +241,16 @@ type Transfer @entity {
   emittedBy: Bytes! #address
   transaction: Transaction!
 }
+type NewTokenIssued @entity {
+  id: ID!
+  pos: BigInt! # uint256
+  name: String! # string
+  symbol: String! # string
+  dr: Bytes! # address
+  sale_address: Bytes! # address
+  proxyregistry: Bytes! # address
+  owner: Bytes! # address
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}

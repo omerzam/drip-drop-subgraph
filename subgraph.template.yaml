@@ -130,3 +130,25 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/DR_Token.ts
+
+  - kind: ethereum/contract
+    name: DR_TokenFactory
+    network: {{network}}
+    source:
+      address: '{{DR_TokenFactory.address}}'
+      abi: DR_TokenFactory
+      startBlock: {{DR_TokenFactory.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NewTokenIssued
+      abis:
+        - name: DR_TokenFactory
+          file: ./abis/DR_TokenFactory.json
+      eventHandlers:
+        
+        - event: NewTokenIssued(uint256,string,string,address,address,address,address)
+          handler: handleNewTokenIssued
+      file: ./src/DR_TokenFactory.ts

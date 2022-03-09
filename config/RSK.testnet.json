@@ -15,5 +15,9 @@
   "DR_Token": {
     "address": "",
     "startBlock": 0
+  },
+  "DR_TokenFactory": {
+    "address": "",
+    "startBlock": 0
   }
 }
