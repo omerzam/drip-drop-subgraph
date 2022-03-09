@@ -32,3 +32,64 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/DR_Registry.ts
+
+  - kind: ethereum/contract
+    name: DR_Sale
+    network: {{network}}
+    source:
+      address: '{{DR_Sale.address}}'
+      abi: DR_Sale
+      startBlock: {{DR_Sale.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - BidIncreased
+        - BidReceived
+        - ItemAdded
+        - ItemOnSale
+        - MetaTransactionExecuted
+        - NewOffer
+        - OfferAccepted
+        - OwnershipTransferred
+        - Payment
+        - Royalties
+        - SaleResubmitted
+        - SaleRetracted
+        - SharesUpdated
+        - WalletTransferred
+      abis:
+        - name: DR_Sale
+          file: ./abis/DR_Sale.json
+      eventHandlers:
+        
+        - event: BidIncreased(address,uint256,uint256,uint256)
+          handler: handleBidIncreased
+        - event: BidReceived(address,uint256,uint256)
+          handler: handleBidReceived
+        - event: ItemAdded(uint256,address,uint256,address,string,uint256)
+          handler: handleItemAdded
+        - event: ItemOnSale(uint256,address,uint256,uint256,address,string,uint256,address,bool)
+          handler: handleItemOnSale
+        - event: MetaTransactionExecuted(address,address,bytes)
+          handler: handleMetaTransactionExecuted
+        - event: NewOffer(uint256,address,uint256,string)
+          handler: handleNewOffer
+        - event: OfferAccepted(address,address,uint256,address,uint256,uint256,address)
+          handler: handleOfferAccepted
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Payment(address,address,address)
+          handler: handlePayment
+        - event: Royalties(address[],uint256[],address[],uint256[],uint256,uint256)
+          handler: handleRoyalties
+        - event: SaleResubmitted(uint256,uint256)
+          handler: handleSaleResubmitted
+        - event: SaleRetracted(address,uint256,address,uint256)
+          handler: handleSaleRetracted
+        - event: SharesUpdated(uint256,uint256,uint256)
+          handler: handleSharesUpdated
+        - event: WalletTransferred(indexed address,indexed address)
+          handler: handleWalletTransferred
+      file: ./src/DR_Sale.ts

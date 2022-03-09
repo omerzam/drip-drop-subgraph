@@ -57,3 +57,149 @@ type OwnershipTransferred @entity {
   emittedBy: Bytes! #address
   transaction: Transaction!
 }
+type BidIncreased @entity {
+  id: ID!
+  bidder: Bytes! # address
+  tokenId: BigInt! # uint256
+  previous_bid: BigInt! # uint256
+  this_bid: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type BidReceived @entity {
+  id: ID!
+  bidder: Bytes! # address
+  tokenId: BigInt! # uint256
+  bid: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type ItemAdded @entity {
+  id: ID!
+  itemRef: BigInt! # uint256
+  token_address: Bytes! # address
+  token_id: BigInt! # uint256
+  owner: Bytes! # address
+  uri: String! # string
+  royalty: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type ItemOnSale @entity {
+  id: ID!
+  itemRef: BigInt! # uint256
+  contract_address: Bytes! # address
+  tokenId: BigInt! # uint256
+  asking_price: BigInt! # uint256
+  payment_token: Bytes! # address
+  uri: String! # string
+  royalty: BigInt! # uint256
+  owner: Bytes! # address
+  resale: Boolean! # bool
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type MetaTransactionExecuted @entity {
+  id: ID!
+  userAddress: Bytes! # address
+  relayerAddress: Bytes! # address
+  functionSignature: Bytes! # bytes
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type NewOffer @entity {
+  id: ID!
+  tokenId: BigInt! # uint256
+  owner: Bytes! # address
+  price: BigInt! # uint256
+  hash: String! # string
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type OfferAccepted @entity {
+  id: ID!
+  buyer: Bytes! # address
+  seller: Bytes! # address
+  itemRef: BigInt! # uint256
+  contract_address: Bytes! # address
+  tokenId: BigInt! # uint256
+  price: BigInt! # uint256
+  payment_token: Bytes! # address
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type Payment @entity {
+  id: ID!
+  wallet: Bytes! # address
+  creator: Bytes! # address
+  _owner: Bytes! # address
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type Royalties @entity {
+  id: ID!
+  # first_payees: [Bytes]! # address[]
+  # first_shares: [BigInt]! # uint256[]
+  # resale_payees: [Bytes]! # address[]
+  # resale_shares: [BigInt]! # uint256[]
+  itemRef: BigInt! # uint256
+  tokenId: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type SaleResubmitted @entity {
+  id: ID!
+  tokenId: BigInt! # uint256
+  price: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type SaleRetracted @entity {
+  id: ID!
+  owner: Bytes! # address
+  itemRef: BigInt! # uint256
+  contract_address: Bytes! # address
+  tokenId: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type SharesUpdated @entity {
+  id: ID!
+  ownerShare: BigInt! # uint256
+  creatorShare: BigInt! # uint256
+  divisor: BigInt! # uint256
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}
+
+type WalletTransferred @entity {
+  id: ID!
+  previousWallet: Bytes! # address
+  newWallet: Bytes! # address
+  timestamp: BigInt!
+  emittedBy: Bytes! #address
+  transaction: Transaction!
+}

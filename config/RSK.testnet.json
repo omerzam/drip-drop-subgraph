@@ -1,1 +1,15 @@
-{"network":"testnet","node":{"address":"","log_level":"debug"},"DR_Registry":{"address":"","startBlock":0}}
+{
+  "network": "testnet",
+  "node": {
+    "address": "",
+    "log_level": "debug"
+  },
+  "DR_Registry": {
+    "address": "",
+    "startBlock": 0
+  },
+  "DR_Sale": {
+    "address": "",
+    "startBlock": 0
+  }
+}
