@@ -115,25 +115,24 @@ const loadAbiFromFile = async (filename) => {
   }
 }
 
-const updateMustacheConfigFile = ({ contractName, network = 'mainnet', address, startBlock = 0 }) => {
+const updateMustacheConfigFile = ({ contractName, network = 'mainnet', address = '', startBlock = 0 }) => {
   const mustacheConfigPath = path.resolve(__dirname + '/../config/' + `RSK.${network}.json`)
   const mustacheConfig = readFileSync(mustacheConfigPath, 'utf8')
   const mustacheConfigParsed = JSON.parse(mustacheConfig)
   mustacheConfigParsed[contractName] = {
-    network: 'mainnet',
     address,
     startBlock,
   }
   writeFileSync(mustacheConfigPath, JSON.stringify(mustacheConfigParsed), 'utf8')
 }
 
-const getAddressFromConfig = (network, contractName) => {
-  const contractAddressesPath = path.resolve(__dirname + '/../config/' + `${network}_contracts.json`)
-  const contractAddresses = readFileSync(contractAddressesPath, 'utf8')
-  const contractAddressesObj = JSON.parse(contractAddresses)
-  const address = contractAddressesObj[contractName]
-  return address
-}
+// const getAddressFromConfig = (network, contractName) => {
+//   const contractAddressesPath = path.resolve(__dirname + '/../config/' + `${network}_contracts.json`)
+//   const contractAddresses = readFileSync(contractAddressesPath, 'utf8')
+//   const contractAddressesObj = JSON.parse(contractAddresses)
+//   const address = contractAddressesObj[contractName]
+//   return address
+// }
 // TODO: get contract addresses from specified json file
 // TODO: get contract start block with web3/etherscan or other
 // TODO: indexEvents param should be configurable
@@ -149,12 +148,12 @@ const startScaffoldAll = async () => {
       const relativePath = path.relative(__dirname + '/../', filePath)
       const pathArr = filePath.split('/')
       const contractName = pathArr[pathArr.length - 1].split('.json')[0]
-      address = getAddressFromConfig(network, contractName)
-      if (address) {
-        console.log(`found address for contract ${contractName}: ${address}`)
-      } else {
-        throw new Error(`no address provided for contract ${contractName}`)
-      }
+      // address = getAddressFromConfig(network, contractName)
+      // if (address) {
+      //   console.log(`found address for contract ${contractName}: ${address}`)
+      // } else {
+      //   throw new Error(`no address provided for contract ${contractName}`)
+      // }
       console.log(`loading ${contractName} ABI from ${relativePath}`)
       const abi = await loadAbiFromFile(filePath)
       const scaffolds = getScaffoldInstance({
@@ -230,15 +229,15 @@ const startScaffoldAbi = async (filepath, address, blockNumber, isGenerateMappin
   const relativePath = path.relative(__dirname + '/../', filepath)
   const pathArr = relativePath.split('/')
   const contractName = pathArr[pathArr.length - 1].split('.json')[0]
-  if (address === undefined || address === null) {
-    console.log(`no address provided for ${contractName}, trying to load from json file`)
-    address = getAddressFromConfig(network)
-    if (address) {
-      console.log(`found address for contract ${contractName}: ${address}`)
-    } else {
-      throw new Error(`no address provided for contract ${contractName}`)
-    }
-  }
+  // if (address === undefined || address === null) {
+  //   console.log(`no address provided for ${contractName}, trying to load from json file`)
+  //   address = getAddressFromConfig(network)
+  //   if (address) {
+  //     console.log(`found address for contract ${contractName}: ${address}`)
+  //   } else {
+  //     throw new Error(`no address provided for contract ${contractName}`)
+  //   }
+  // }
   console.log(`loading ${contractName} ABI from ${relativePath}`)
   const abi = await loadAbiFromFile(relativePath)
   const scaffolds = getScaffoldInstance({
