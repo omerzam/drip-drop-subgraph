@@ -1,11 +1,1 @@
-{
-    "network": "mainnet",
-    "node": {
-        "address": "",
-        "log_level": "debug"
-    },
-    "WRBTCToken": {
-        "address": "0x69FE5cEC81D5eF92600c1A0dB1F11986AB3758Ab",
-        "startBlock": 1205599
-    }
-}
+{"network":"testnet","node":{"address":"","log_level":"debug"},"DR_Registry":{"address":"","startBlock":0}}

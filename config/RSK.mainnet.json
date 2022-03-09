@@ -1,0 +1,11 @@
+{
+  "network": "mainnet",
+  "node": {
+    "address": "",
+    "log_level": "debug"
+  },
+  "DR_Registry": {
+    "address": "",
+    "startBlock": 0
+  }
+}

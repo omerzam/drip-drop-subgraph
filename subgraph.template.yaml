@@ -2,26 +2,33 @@ specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: ethereum
-    name: ERC20
-    network: mainnet
+  - kind: ethereum/contract
+    name: DR_Registry
+    network: {{network}}
     source:
-      address: "{{WRBTCToken.address}}"
-      abi: ERC20
-      startBlock: {{WRBTCToken.startBlock}}
+      address: '{{DR_Registry.address}}'
+      abi: DR_Registry
+      startBlock: {{DR_Registry.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - Transfer
+        - Admin
+        - Minter
+        - Operator
+        - OwnershipTransferred
       abis:
-        - name: ERC20
-          file: ./abis/ERC20.json
+        - name: DR_Registry
+          file: ./abis/DR_Registry.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/mapping.ts
+        
+        - event: Admin(bool,address)
+          handler: handleAdmin
+        - event: Minter(bool,address)
+          handler: handleMinter
+        - event: Operator(bool,address)
+          handler: handleOperator
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/DR_Registry.ts
