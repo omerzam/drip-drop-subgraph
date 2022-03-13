@@ -20,17 +20,6 @@
       "type": "constructor"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "notAdmin",
-          "type": "address"
-        }
-      ],
-      "name": "notAdminError",
-      "type": "error"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
