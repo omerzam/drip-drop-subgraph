@@ -3,6 +3,28 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
+    name: DR_TokenFactory
+    network: {{network}}
+    source:
+      address: '{{DR_TokenFactory.address}}'
+      abi: DR_TokenFactory
+      startBlock: {{DR_TokenFactory.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NewTokenIssued
+      abis:
+        - name: DR_TokenFactory
+          file: ./abis/DR_TokenFactory.json
+      eventHandlers:
+        
+        - event: NewTokenIssued(uint256,string,string,address,address,address,address)
+          handler: handleNewTokenIssued
+      file: ./src/DR_TokenFactory.ts
+
+  - kind: ethereum/contract
     name: DR_Registry
     network: {{network}}
     source:
@@ -33,13 +55,51 @@ dataSources:
           handler: handleOwnershipTransferred
       file: ./src/DR_Registry.ts
 
+templates:
+  - kind: ethereum/contract
+    name: DR_Token
+    network: {{network}}
+    source:
+      # address: '{{DR_Token.address}}'
+      abi: DR_Token
+      # startBlock: {{DR_Token.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - MetaTransactionExecuted
+        - OperatorSet
+        - OwnershipTransferred
+        - Transfer
+      abis:
+        - name: DR_Token
+          file: ./abis/DR_Token.json
+      eventHandlers:
+        
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: MetaTransactionExecuted(address,address,bytes)
+          handler: handleMetaTransactionExecuted
+        - event: OperatorSet(address,bool)
+          handler: handleOperatorSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/DR_Token.ts
+
   - kind: ethereum/contract
     name: DR_Sale
     network: {{network}}
     source:
-      address: '{{DR_Sale.address}}'
+      # address: '{{DR_Sale.address}}'
       abi: DR_Sale
-      startBlock: {{DR_Sale.startBlock}}
+      # startBlock: {{DR_Sale.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -93,62 +153,3 @@ dataSources:
         - event: WalletTransferred(indexed address,indexed address)
           handler: handleWalletTransferred
       file: ./src/DR_Sale.ts
-
-  - kind: ethereum/contract
-    name: DR_Token
-    network: {{network}}
-    source:
-      address: '{{DR_Token.address}}'
-      abi: DR_Token
-      startBlock: {{DR_Token.startBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Approval
-        - ApprovalForAll
-        - MetaTransactionExecuted
-        - OperatorSet
-        - OwnershipTransferred
-        - Transfer
-      abis:
-        - name: DR_Token
-          file: ./abis/DR_Token.json
-      eventHandlers:
-        
-        - event: Approval(indexed address,indexed address,indexed uint256)
-          handler: handleApproval
-        - event: ApprovalForAll(indexed address,indexed address,bool)
-          handler: handleApprovalForAll
-        - event: MetaTransactionExecuted(address,address,bytes)
-          handler: handleMetaTransactionExecuted
-        - event: OperatorSet(address,bool)
-          handler: handleOperatorSet
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      file: ./src/DR_Token.ts
-
-  - kind: ethereum/contract
-    name: DR_TokenFactory
-    network: {{network}}
-    source:
-      address: '{{DR_TokenFactory.address}}'
-      abi: DR_TokenFactory
-      startBlock: {{DR_TokenFactory.startBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - NewTokenIssued
-      abis:
-        - name: DR_TokenFactory
-          file: ./abis/DR_TokenFactory.json
-      eventHandlers:
-        
-        - event: NewTokenIssued(uint256,string,string,address,address,address,address)
-          handler: handleNewTokenIssued
-      file: ./src/DR_TokenFactory.ts

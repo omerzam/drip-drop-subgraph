@@ -1,23 +1,15 @@
 {
   "network": "testnet",
   "node": {
-    "address": "",
+    "address": "https://testnet.sovryn.app/rpc",
     "log_level": "debug"
   },
-  "DR_Registry": {
-    "address": "",
-    "startBlock": 0
-  },
-  "DR_Sale": {
-    "address": "",
-    "startBlock": 0
-  },
-  "DR_Token": {
-    "address": "",
-    "startBlock": 0
-  },
   "DR_TokenFactory": {
-    "address": "",
-    "startBlock": 0
+    "address": "0xc7DBEe4Cf756789642480Ee2345F11da6fD9EcBC",
+    "startBlock": 2658988
+  },
+  "DR_Registry": {
+    "address": "0x8f6006F51737D2d30c19e12156bb038D0B8F5ad6",
+    "startBlock": 2658985
   }
 }
