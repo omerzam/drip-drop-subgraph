@@ -1,12 +1,12 @@
-import { NewTokenIssued as NewTokenIssuedEvent } from "../generated/DR_TokenFactory/DR_TokenFactory"
-import { NewTokenIssued } from "../generated/schema"
+import { NewTokenIssued as NewTokenIssuedEvent } from '../generated/DR_TokenFactory/DR_TokenFactory'
+import { NewTokenIssued } from '../generated/schema'
+import { DR_Sale as DRSaleTemplate } from '../generated/templates'
 
 import { loadTransaction } from './utils/Transaction'
+import { loadToken } from './utils/Token'
 
 export function handleNewTokenIssued(event: NewTokenIssuedEvent): void {
-  let entity = new NewTokenIssued(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
+  let entity = new NewTokenIssued(event.transaction.hash.toHex() + '-' + event.logIndex.toString())
   entity.pos = event.params.pos
   entity.name = event.params.name
   entity.symbol = event.params.symbol
@@ -19,4 +19,7 @@ export function handleNewTokenIssued(event: NewTokenIssuedEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  const token = loadToken(event.params.dr)
+  DRSaleTemplate.create(event.params.sale_address)
 }
