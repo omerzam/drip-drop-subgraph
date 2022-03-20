@@ -4,9 +4,10 @@ import {
   Operator as OperatorEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
 } from '../generated/DR_Registry/DR_Registry'
-import { Admin, Minter, Operator, OwnershipTransferred } from '../generated/schema'
+import { Admin, Minter, Operator, OwnershipTransferred, User } from '../generated/schema'
 
 import { loadTransaction } from './utils/Transaction'
+import { loadUser } from './utils/User'
 
 export function handleAdmin(event: AdminEvent): void {
   let entity = new Admin(event.transaction.hash.toHex() + '-' + event.logIndex.toString())
@@ -17,6 +18,10 @@ export function handleAdmin(event: AdminEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  const user = loadUser(event.params.userAddress)
+  user.isAdmin = event.params.isAdmin
+  user.save()
 }
 
 export function handleMinter(event: MinterEvent): void {
@@ -28,6 +33,10 @@ export function handleMinter(event: MinterEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  const user = loadUser(event.params.userAddress)
+  user.isMinter = event.params.isMinter
+  user.save()
 }
 
 export function handleOperator(event: OperatorEvent): void {
@@ -39,6 +48,10 @@ export function handleOperator(event: OperatorEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  const user = loadUser(event.params.userAddress)
+  user.isOperator = event.params.isOperator
+  user.save()
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {

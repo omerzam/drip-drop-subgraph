@@ -32,6 +32,7 @@ import {
 } from '../generated/schema'
 
 import { loadTransaction } from './utils/Transaction'
+import { loadUser } from './utils/User'
 
 export function handleBidIncreased(event: BidIncreasedEvent): void {
   let entity = new BidIncreased(event.transaction.hash.toHex() + '-' + event.logIndex.toString())

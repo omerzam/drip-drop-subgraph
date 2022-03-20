@@ -4,6 +4,7 @@ import { DR_Sale as DRSaleTemplate } from '../generated/templates'
 
 import { loadTransaction } from './utils/Transaction'
 import { loadToken } from './utils/Token'
+import { loadUser } from './utils/User'
 
 export function handleNewTokenIssued(event: NewTokenIssuedEvent): void {
   let entity = new NewTokenIssued(event.transaction.hash.toHex() + '-' + event.logIndex.toString())
@@ -21,5 +22,6 @@ export function handleNewTokenIssued(event: NewTokenIssuedEvent): void {
   entity.save()
 
   const token = loadToken(event.params.dr)
+  const user = loadUser(event.params.owner)
   DRSaleTemplate.create(event.params.sale_address)
 }
