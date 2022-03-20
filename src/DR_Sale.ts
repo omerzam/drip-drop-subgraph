@@ -17,6 +17,7 @@ import {
 import {
   BidIncreased,
   BidReceived,
+  Item,
   ItemAdded,
   ItemOnSale,
   MetaTransactionExecuted,
@@ -30,6 +31,7 @@ import {
   SharesUpdated,
   WalletTransferred,
 } from '../generated/schema'
+import { createItem, ItemState } from './utils/Item'
 
 import { loadTransaction } from './utils/Transaction'
 import { loadUser } from './utils/User'
@@ -63,8 +65,10 @@ export function handleItemAdded(event: ItemAddedEvent): void {
   let entity = new ItemAdded(event.transaction.hash.toHex() + '-' + event.logIndex.toString())
   entity.itemRef = event.params.itemRef
   entity.token_address = event.params.token_address
+  // TODO: what is the difference between itemRef and token_id?
   entity.token_id = event.params.token_id
-  entity.owner = event.params.owner
+  const owner = loadUser(event.params.owner)
+  entity.owner = event.params.owner.toHex()
   entity.uri = event.params.uri
   entity.royalty = event.params.royalty
   let transaction = loadTransaction(event)
@@ -72,11 +76,14 @@ export function handleItemAdded(event: ItemAddedEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  const item = createItem(event)
 }
 
 export function handleItemOnSale(event: ItemOnSaleEvent): void {
-  let entity = new ItemOnSale(event.transaction.hash.toHex() + '-' + event.logIndex.toString())
+  let entity = new ItemOnSale(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
   entity.itemRef = event.params.itemRef
+  entity.item = event.params.contract_address.toHex() + '-' + event.params.itemRef.toString()
   entity.contract_address = event.params.contract_address
   entity.tokenId = event.params.tokenId
   entity.asking_price = event.params.asking_price
@@ -90,6 +97,14 @@ export function handleItemOnSale(event: ItemOnSaleEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  let item = Item.load(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
+  if (item == null) {
+    item = new Item(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
+  }
+  item.itemOnSale = entity.id
+  item.state = ItemState.OnSale
+  item.save()
 }
 
 export function handleMetaTransactionExecuted(event: MetaTransactionExecutedEvent): void {
@@ -131,6 +146,17 @@ export function handleOfferAccepted(event: OfferAcceptedEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  const buyer = loadUser(event.params.buyer)
+  const seller = loadUser(event.params.seller)
+
+  let item = Item.load(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
+  if (item == null) {
+    item = new Item(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
+  }
+  item.owner = event.params.buyer.toHex()
+  item.state = ItemState.Sold
+  item.save()
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
@@ -193,6 +219,15 @@ export function handleSaleRetracted(event: SaleRetractedEvent): void {
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
+
+  let item = Item.load(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
+  if (item == null) {
+    item = new Item(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
+  }
+
+  item.itemOnSale = null
+  item.state = ItemState.SaleRetracted
+  item.save()
 }
 
 export function handleSharesUpdated(event: SharesUpdatedEvent): void {
