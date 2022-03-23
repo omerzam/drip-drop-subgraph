@@ -21,7 +21,10 @@ export function handleNewTokenIssued(event: NewTokenIssuedEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  const token = loadToken(event.params.dr)
+  const token = loadToken(event.params.dr, transaction)
   const user = loadUser(event.params.owner)
+
+  token.owner = event.params.owner.toHex()
+  token.save()
   DRSaleTemplate.create(event.params.sale_address)
 }

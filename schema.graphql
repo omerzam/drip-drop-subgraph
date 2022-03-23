@@ -29,6 +29,12 @@ type Token @entity {
   name: String!
   # token total supply
   totalSupply: BigInt!
+  # token owner
+  owner: User!
+
+  createdAtTx: Transaction!
+
+  updatedAtTx: Transaction!
   # items
   items: [Item!] @derivedFrom(field: "token")
 }
@@ -38,6 +44,7 @@ type User @entity {
   isAdmin: Boolean!
   isMinter: Boolean!
   isOperator: Boolean!
+  tokens: [Token!] @derivedFrom(field: "owner")
   items: [Item!] @derivedFrom(field: "owner")
   bids: [Bid!] @derivedFrom(field: "bidder")
 }
