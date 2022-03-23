@@ -22,7 +22,7 @@ export function handleNewTokenIssued(event: NewTokenIssuedEvent): void {
   entity.save()
 
   const token = loadToken(event.params.dr, transaction)
-  const user = loadUser(event.params.owner)
+  const user = loadUser(event.params.owner, transaction)
 
   token.owner = event.params.owner.toHex()
   token.save()

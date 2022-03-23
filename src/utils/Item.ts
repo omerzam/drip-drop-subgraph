@@ -1,6 +1,6 @@
-import { Address } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { ItemAdded as ItemAddedEvent } from '../../generated/DR_Sale/DR_Sale'
-import { Item } from '../../generated/schema'
+import { Item, Transaction } from '../../generated/schema'
 import { loadUser } from './User'
 
 export class ItemState {
@@ -11,8 +11,8 @@ export class ItemState {
   static Sold: string = 'Sold'
 }
 
-export function createItem(event: ItemAddedEvent): Item {
-  const owner = loadUser(event.params.owner)
+export function createItem(event: ItemAddedEvent, transaction: Transaction): Item {
+  const owner = loadUser(event.params.owner, transaction)
 
   let item = new Item(event.params.token_address.toHex() + '-' + event.params.itemRef.toString())
   item.state = ItemState.New
@@ -21,6 +21,17 @@ export function createItem(event: ItemAddedEvent): Item {
   item.owner = event.params.owner.toHex()
   item.uri = event.params.uri
   item.royalty = event.params.royalty
+  item.createdAtTx = transaction.id.toString()
+  item.updatedAtTx = transaction.id.toString()
   item.save()
+  return item
+}
+
+export function loadItem(tokenAddress: Address, itemRef: BigInt): Item {
+  const itemId = tokenAddress.toHex() + '-' + itemRef.toString()
+  let item = Item.load(itemId)
+  if (item == null) {
+    item = new Item(itemId)
+  }
   return item
 }

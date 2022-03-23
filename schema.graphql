@@ -44,6 +44,8 @@ type User @entity {
   isAdmin: Boolean!
   isMinter: Boolean!
   isOperator: Boolean!
+  createdAtTx: Transaction!
+  updatedAtTx: Transaction!
   tokens: [Token!] @derivedFrom(field: "owner")
   items: [Item!] @derivedFrom(field: "owner")
   bids: [Bid!] @derivedFrom(field: "bidder")
@@ -69,6 +71,8 @@ type Item @entity {
   royalty: BigInt! # uint256
   timestamp: BigInt!
   itemOnSale: ItemOnSale
+  createdAtTx: Transaction!
+  updatedAtTx: Transaction!
 }
 
 type Bid @entity {

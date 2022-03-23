@@ -31,7 +31,7 @@ import {
   SharesUpdated,
   WalletTransferred,
 } from '../generated/schema'
-import { createItem, ItemState } from './utils/Item'
+import { createItem, ItemState, loadItem } from './utils/Item'
 
 import { loadTransaction } from './utils/Transaction'
 import { loadUser } from './utils/User'
@@ -67,17 +67,17 @@ export function handleItemAdded(event: ItemAddedEvent): void {
   entity.token_address = event.params.token_address
   // TODO: what is the difference between itemRef and token_id?
   entity.token_id = event.params.token_id
-  const owner = loadUser(event.params.owner)
+  let transaction = loadTransaction(event)
+  const owner = loadUser(event.params.owner, transaction)
   entity.owner = event.params.owner.toHex()
   entity.uri = event.params.uri
   entity.royalty = event.params.royalty
-  let transaction = loadTransaction(event)
   entity.transaction = transaction.id
   entity.timestamp = transaction.timestamp
   entity.emittedBy = event.address
   entity.save()
 
-  const item = createItem(event)
+  const item = createItem(event, transaction)
 }
 
 export function handleItemOnSale(event: ItemOnSaleEvent): void {
@@ -98,12 +98,10 @@ export function handleItemOnSale(event: ItemOnSaleEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  let item = Item.load(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
-  if (item == null) {
-    item = new Item(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
-  }
+  const item = loadItem(event.params.contract_address, event.params.itemRef)
   item.itemOnSale = entity.id
   item.state = ItemState.OnSale
+  item.updatedAtTx = transaction.id.toString()
   item.save()
 }
 
@@ -147,15 +145,13 @@ export function handleOfferAccepted(event: OfferAcceptedEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  const buyer = loadUser(event.params.buyer)
-  const seller = loadUser(event.params.seller)
+  const buyer = loadUser(event.params.buyer, transaction)
+  const seller = loadUser(event.params.seller, transaction)
 
-  let item = Item.load(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
-  if (item == null) {
-    item = new Item(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
-  }
+  const item = loadItem(event.params.contract_address, event.params.itemRef)
   item.owner = event.params.buyer.toHex()
   item.state = ItemState.Sold
+  item.updatedAtTx = transaction.id.toString()
   item.save()
 }
 
@@ -220,13 +216,10 @@ export function handleSaleRetracted(event: SaleRetractedEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  let item = Item.load(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
-  if (item == null) {
-    item = new Item(event.params.contract_address.toHex() + '-' + event.params.itemRef.toString())
-  }
-
+  const item = loadItem(event.params.contract_address, event.params.itemRef)
   item.itemOnSale = null
   item.state = ItemState.SaleRetracted
+  item.updatedAtTx = transaction.id.toString()
   item.save()
 }
 

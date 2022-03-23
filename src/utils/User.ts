@@ -1,7 +1,7 @@
 import { Address } from '@graphprotocol/graph-ts'
-import { User } from '../../generated/schema'
+import { Transaction, User } from '../../generated/schema'
 
-export function loadUser(address: Address): User {
+export function loadUser(address: Address, transaction: Transaction): User {
   let userEntity = User.load(address.toHex())
 
   if (userEntity == null) {
@@ -9,8 +9,10 @@ export function loadUser(address: Address): User {
     userEntity.isAdmin = false
     userEntity.isMinter = false
     userEntity.isOperator = false
+    userEntity.createdAtTx = transaction.id.toString()
   }
 
+  userEntity.updatedAtTx = transaction.id.toString()
   userEntity.save()
   return userEntity
 }

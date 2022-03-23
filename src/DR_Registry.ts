@@ -19,7 +19,7 @@ export function handleAdmin(event: AdminEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  const user = loadUser(event.params.userAddress)
+  const user = loadUser(event.params.userAddress, transaction)
   user.isAdmin = event.params.isAdmin
   user.save()
 }
@@ -34,7 +34,7 @@ export function handleMinter(event: MinterEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  const user = loadUser(event.params.userAddress)
+  const user = loadUser(event.params.userAddress, transaction)
   user.isMinter = event.params.isMinter
   user.save()
 }
@@ -49,7 +49,7 @@ export function handleOperator(event: OperatorEvent): void {
   entity.emittedBy = event.address
   entity.save()
 
-  const user = loadUser(event.params.userAddress)
+  const user = loadUser(event.params.userAddress, transaction)
   user.isOperator = event.params.isOperator
   user.save()
 }
