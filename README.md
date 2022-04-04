@@ -1,4 +1,4 @@
-# Example Subgraph
+# Drip Drop Subgraph
 
 ## Prerequisites
 
@@ -24,13 +24,3 @@
 * npm run deploy-local
   
 * go to http://localhost:8000/subgraphs/name/DistributedCollective/sovryn-subgraph/graphql
-
-
-## Scaffolding:
-
-* npm run scaffold -- -fp <abi file path> -gm -gs -a <contract address>
-
-* npm run scaffold -- --help for more options
-
-
-An example to help you get started with The Graph. For more information see the docs on https://thegraph.com/docs/.
